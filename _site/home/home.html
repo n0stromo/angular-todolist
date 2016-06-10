@@ -1,0 +1,125 @@
+<div class="container">
+	<div class="row">
+		<div class="animated zoomIn col-xs-12 text-center">
+	  		<h2>Welcome {{auth.profile.nickname}}</h2>
+		</div>
+	</div>
+
+	<div ng-controller="TodoCtrl">
+		<div class="row">
+			<div class="col-xs-12">
+				<h1 class="animated zoomIn text-center">ToDo</h1>
+			</div>
+		</div>
+					        
+		<!--### row to list all todos ###-->
+		<div class="row" ng-repeat="todo in todos | orderBy:'-id' | filter:statusFilter track by $index" ng-class="{completed: todo.completed}">
+			<div class="col-xs-12 col-md-6 col-md-offset-3">
+
+				<div class="animated fadeInLeft input-group">
+					<span class="input-group-addon" rold="group"> 
+						<input class="checkbox check is-checked" type="checkbox" ng-model="todo.completed" ng-click="todoCompleted(todo)">
+					</span>
+					<form>
+						<input class="form-control input-lg" ng-class="[todo.color]" ng-trim="false" ng-model="todo.title" ng-blur="doneEditing(todo)">
+					</form>
+
+					<!-- info button -->
+					<span class="input-group-btn">
+						<button class="btn btn-default btn-lg " data-toggle="modal" data-target="#success{{$index+1}}">
+							<i class="glyphicon glyphicon-info-sign"></i>
+						</button>
+					</span> 
+					<span class="input-group-btn">
+						<button class="btn btn-default btn-lg" ng-init="setColor(todo)"	ng-click="deleteTodo(todo)">
+							<i class="glyphicon glyphicon-minus-sign"></i>
+						</button>
+					</span>
+				</div>
+				
+				<!--### Modal ###-->
+				<div class="modal fade" id="success{{$index+1}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-sm">
+						<div class="modal-content">
+							<div class="modal-header modal-header-success">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+								<h1 align="center" class="modal_color" id="UNIQUELABEL{{$index+1}} ">
+									<i class="glyphicon glyphicon-star"></i>   {{todo.title}}
+								</h1>
+							</div>
+							
+							<div class="modal-body">
+							   
+									<p></p>									
+									<div class="form-group">
+										<label for="recipient-name" class="form-control-label">Place:</label>
+										<input type="text" class="form-control" id="recipient-name"
+											ng-model="todo.place" ng-trim="false" ng-blur="doneEditing(todo)">
+									</div>
+									<div class="form-group">
+										<label for="message-text" class="form-control-label">Description:</label>
+										<textarea class="form-control" id="message-text"
+											ng-model="todo.description" ng-trim="false" ng-blur="doneEditing(todo)"></textarea>
+									</div>
+								</form>
+							</div>
+							
+							<div class="modal-footer">
+							
+								<!-- ### Dropdown ### -->
+									<div class="form-group">
+										<label for="recipient-name" class="form-control-label">Priority:</label>
+							            <select class="form-control" ng-model="todo.color" ng-change="update(todo)"
+							            required ng-options="bgrColor.className as bgrColor.className for bgrColor in bgrColor" ></select>
+							        </div>			
+							</div>
+						</div>
+					</div>
+				</div><!-- Modal -->
+				
+			</div>
+		</div>
+
+		<!--input row -->
+		<div class="row">
+			<div class="col-xs-12 col-md-6 col-md-offset-3">
+				<div class="animated fadeInUp input-group">
+					<form id="todo-form" ng-submit="addTodo()">
+						<input class="form-control input-lg" ng-model="newTodo" class="my-input" id="test">
+					</form>
+					<span class="input-group-btn">
+						<button class="btn btn-default btn-lg" ng-click="addTodo()" id="go-button">
+						<i class="glyphicon glyphicon-plus-sign"></i>
+						</button>
+						<p></p>
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- list filter todos -->
+		<div class="row">
+			<div class="col-xs-12 col-md-6 col-md-offset-3 text-center" ng-show="todos.length">
+				<div class="animated fadeInUp btn-group">
+					<a class="col-xs-4 btn btn-sm" ng-class="{selected: location.path() == '/completed'}" href="#/completed">
+					<button class="btn btn-primary">completed</button></a>					
+					<a class="col-xs-4 btn btn-sm" ng-class="{selected: location.path() == '/active'}" href="#/active">
+					<button class="btn btn-primary">active   </button></a>					
+					<a class="col-xs-4 btn btn-sm" ng-class="{selected: location.path() == '/'}" href="#/all">
+					<button class="btn btn-primary">all      </button></a>
+				</div>
+			</div>
+		</div>
+		
+		<!-- logout button -->
+		<div class="row">
+			<div class="col-xs-12 col-md-6 col-md-offset-3 text-center">
+				<div class="animated fadeInUp btn-group">
+					<a class="col-xs-4 btn btn-sm">
+					<button class="btn btn-sm btn-warning" ng-click="logout()">Logout</button></a>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>

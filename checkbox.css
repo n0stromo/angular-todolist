@@ -1,0 +1,13 @@
+.check-box input {
+  display: none;
+}
+.check-box span:before {
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background: url("unchecked.png");
+}
+.check-box input:checked + span:before {
+  background: url("checked.png");
+}
